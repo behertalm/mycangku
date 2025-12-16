@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >生日快乐</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        body {
+            background-color: #e6f7ff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wishes-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 80%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .wish {
+            position: absolute;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            max-width: 200px;
+        }
+        .wish:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 45%;
+            font-size: 4rem;
+            color: #439cef;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: kaiti;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title" >生日快乐!</h1>
+        <div class="wishes-container" id="wishesContainer"></div>
+    </div>
+
+    <script>
+        const wishes = [
+            "生日快乐！",
+            "天天开心！",
+            "心想事成！",
+            "前程似锦！",
+            "美梦成真！",
+            "吉祥如意！",
+            "幸福安康！",
+            "笑口常开！",
+            "万事如意！",
+            "青春永驻！",
+            "年轻漂亮！",
+            "友谊长存！",
+            "前程似锦！",
+            "吉祥如意！",
+            "万事顺遂！",
+            "笑口常开！",
+            "好运连连！",
+            "步步高升！",
+            "生活美满！",
+            "幸福安康！",
+            "智慧增长！",
+            "财源广进！",
+          
+            "一切顺利！",
+            "如星星般闪耀！",
+            "温暖如初！",
+            "坚强勇敢！",
+            "温柔善良！",
+            "活力四射！",
+            "梦想成真！"
+        ];
+
+        const container = document.getElementById('wishesContainer');
+        const containerRect = container.getBoundingClientRect();
+
+
+
+        // 计算心形的祝福位置
+        function generateWishesInShape() {
+            container.innerHTML = '';
+            
+            // 心形坐标点 - 使用参数方程生成心形
+            const heartPositions = [];
+            const centerX = 0.5; // 心形中心X坐标
+            const centerY = 0.5; // 心形中心Y坐标
+            const scale = 0.7;   // 心形大小缩放因子
+            
+            // 使用参数方程生成心形点
+            for (let t = 0; t < Math.PI * 2; t += 0.2) {
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = 18 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                
+                // 转换为容器坐标系统
+                const containerX = centerX + (x / 40) * scale;
+                const containerY = centerY - (y / 40) * scale;
+                
+                heartPositions.push({x: containerX, y: containerY});
+            }
+            
+            // 打乱祝福顺序
+            const shuffledWishes = wishes.sort(() => 0.5 - Math.random());
+            
+            // 创建祝福元素
+            heartPositions.forEach((pos, index) => {
+                if (index < shuffledWishes.length) {
+                    const wish = document.createElement('div');
+                    wish.className = 'wish';
+                    wish.style.left = `${pos.x * 100}%`;
+                    wish.style.top = `${pos.y * 100}%`;
+                    wish.textContent = shuffledWishes[index];
+                    
+                    container.appendChild(wish);
+                }
+            });
+        }
+
+
+
+        // 页面加载和调整大小时重新计算
+        window.addEventListener('load', () => {
+            generateWishesInShape();
+        });
+
+        window.addEventListener('resize', () => {
+            generateWishesInShape();
+        });
+
+        // 初始化Lucide图标（如果需要）
+        lucide.createIcons();
+    </script>
+</body>
+</html>
